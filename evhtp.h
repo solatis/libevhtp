@@ -404,7 +404,7 @@ struct evhtp_request_s {
     int               error;
 };
 
-#define evhtp_request_content_len(r) htparser_get_content_length(r->conn->parser)
+#define evhtp_request_content_len(r) r->conn->body_bytes_read
 
 struct evhtp_connection_s {
     evhtp_t         * htp;
