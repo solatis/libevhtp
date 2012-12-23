@@ -662,6 +662,9 @@ _evhtp_request_free(evhtp_request_t * request) {
     evhtp_headers_free(request->headers_in);
     evhtp_headers_free(request->headers_out);
 
+    if (request->post_raw) {
+       free(request->post_raw);
+    }
 
     if (request->buffer_in) {
         evbuffer_free(request->buffer_in);
@@ -1266,21 +1269,21 @@ _evhtp_request_parser_fini(htparser * p) {
      * arguments.
      */
     if (_evhtp_should_parse_query_body(c->request) == 1) {
-        const char  * body;
-        size_t        body_len;
-        evhtp_uri_t * uri;
-        evbuf_t     * buf_in;
+        const char      * body;
+        size_t            body_len;
+        evhtp_request_t * request;
+        evbuf_t         * buf_in;
 
-        uri            = c->request->uri;
+        request        = c->request;
         buf_in         = c->request->buffer_in;
 
         body_len       = evbuffer_get_length(buf_in);
         body           = (const char *)evbuffer_pullup(buf_in, body_len);
 
-        uri->query_raw = calloc(body_len + 1, 1);
-        memcpy(uri->query_raw, body, body_len);
+        request->post_raw = calloc(body_len + 1, 1);
+        memcpy(request->post_raw, body, body_len);
 
-        uri->query     = evhtp_parse_query(body, body_len);
+        request->post     = evhtp_parse_query(body, body_len);
     }
 
 

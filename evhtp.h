@@ -392,6 +392,8 @@ struct evhtp_request_s {
     evbuf_t            * buffer_out;  /**< buffer containing data to client */
     evhtp_headers_t    * headers_in;  /**< headers from client */
     evhtp_headers_t    * headers_out; /**< headers to client */
+    unsigned char      * post_raw;    /**< the unparsed post arguments */
+    evhtp_query_t      * post;        /**< list of k/v for post arguments */
     evhtp_proto          proto;       /**< HTTP protocol used */
     htp_method           method;      /**< HTTP method used */
     evhtp_res            status;      /**< The HTTP response code or other error conditions */
