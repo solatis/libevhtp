@@ -2119,6 +2119,34 @@ evhtp_kvs_add_kv(evhtp_kvs_t * kvs, evhtp_kv_t * kv) {
     TAILQ_INSERT_TAIL(kvs, kv, next);
 }
 
+
+uint64_t
+evhtp_request_content_len(evhtp_request_t * r) {
+   char const * value = evhtp_header_find(r, "content-length");
+
+   if (value == NULL)
+   {
+      /*
+       * If no Content-Length header was provided, it makes most sense to return 0,
+       * since there likely will be no body content either.
+       */
+      return 0;
+   }
+
+   
+   char *   endptr;
+   uint64_t content_len = strtoll(value, &endptr, 10);
+
+   if (*endptr != '\0')
+   {
+      /* Not a number */
+      return 0;
+   }
+
+   return content_len;
+}
+
+
 typedef enum {
     s_query_start = 0,
     s_query_question_mark,

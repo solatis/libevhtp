@@ -406,8 +406,6 @@ struct evhtp_request_s {
     int               error;
 };
 
-#define evhtp_request_content_len(r) r->conn->body_bytes_read
-
 struct evhtp_connection_s {
     evhtp_t         * htp;
     evbase_t        * evbase;
@@ -901,6 +899,15 @@ const char * evhtp_header_find(evhtp_headers_t * headers, const char * key);
 #define evhtp_query_new           evhtp_kvs_new
 #define evhtp_query_free          evhtp_kvs_free
 
+
+/**
+ * @brief finds the content-length header and value
+ *
+ * @param request 
+ *
+ * @return the value of the content-length header if found, 0 if not found
+ */
+uint64_t evhtp_request_content_len(evhtp_request_t * request);
 
 /**
  * @brief returns the htp_method enum version of the request method.
