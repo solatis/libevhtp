@@ -2135,7 +2135,7 @@ evhtp_request_content_len(evhtp_request_t * r) {
 
    
    char *   endptr;
-   uint64_t content_len = strtoll(value, &endptr, 10);
+   uint64_t content_len = strtoull(value, &endptr, 10);
 
    if (*endptr != '\0')
    {
