@@ -2122,7 +2122,7 @@ evhtp_kvs_add_kv(evhtp_kvs_t * kvs, evhtp_kv_t * kv) {
 
 uint64_t
 evhtp_request_content_len(evhtp_request_t * r) {
-   char const * value = evhtp_header_find(r, "content-length");
+   char const * value = evhtp_header_find(r->headers_in, "content-length");
 
    if (value == NULL)
    {
